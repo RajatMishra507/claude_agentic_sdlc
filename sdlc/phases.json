@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "common_tools": ["Read", "Grep", "Glob", "StructuredOutput"],
+  "phases": [
+    {
+      "id": "requirements",
+      "order": 1,
+      "title": "Requirements",
+      "agent": "requirements",
+      "approval_required": true,
+      "responsibility": "Read Confluence pages and Jira stories through Atlassian MCP and produce evidence-backed requirements.",
+      "required_headings": ["Overview", "Requirements", "Source Register", "Open Questions"],
+      "tools": ["mcp__atlassian__*"],
+      "write_paths": [],
+      "checks": ["atlassian_evidence"]
+    },
+    {
+      "id": "architecture",
+      "order": 2,
+      "title": "Architecture",
+      "agent": "architecture",
+      "approval_required": true,
+      "responsibility": "Design the solution architecture that satisfies the approved requirements.",
+      "required_headings": ["Context", "Components", "Data Flow", "Decisions", "Risks"],
+      "tools": [],
+      "write_paths": [],
+      "checks": []
+    },
+    {
+      "id": "design_review",
+      "order": 3,
+      "title": "Design Review",
+      "agent": "design-review",
+      "approval_required": true,
+      "responsibility": "Critically review the architecture against the requirements; do not redesign it.",
+      "required_headings": ["Findings", "Requirement Coverage", "Risks", "Verdict"],
+      "tools": [],
+      "write_paths": [],
+      "checks": []
+    },
+    {
+      "id": "planning",
+      "order": 4,
+      "title": "Planning",
+      "agent": "planning",
+      "approval_required": true,
+      "responsibility": "Break the approved design into ordered, testable implementation tasks.",
+      "required_headings": ["Tasks", "Sequencing", "Test Strategy", "Rollback"],
+      "tools": [],
+      "write_paths": [],
+      "checks": []
+    },
+    {
+      "id": "implementation",
+      "order": 5,
+      "title": "Implementation",
+      "agent": "implementation",
+      "approval_required": true,
+      "responsibility": "Implement the approved plan by editing only the permitted write paths.",
+      "required_headings": ["Changes", "Rationale", "Task Mapping"],
+      "tools": ["Edit", "Write"],
+      "write_paths": ["docs/"],
+      "checks": ["files_changed"]
+    },
+    {
+      "id": "review",
+      "order": 6,
+      "title": "Review",
+      "agent": "review",
+      "approval_required": true,
+      "responsibility": "Review the implementation against the plan and requirements; read-only.",
+      "required_headings": ["Findings", "Task Compliance", "Verdict"],
+      "tools": ["Bash(git diff)", "Bash(git diff *)", "Bash(git status)", "Bash(git status *)"],
+      "write_paths": [],
+      "checks": []
+    },
+    {
+      "id": "verify",
+      "order": 7,
+      "title": "Verify",
+      "agent": "verify",
+      "approval_required": true,
+      "responsibility": "Run checks and confirm acceptance criteria with real command evidence.",
+      "required_headings": ["Commands Run", "Results", "Acceptance Criteria Check", "Verdict"],
+      "tools": [
+        "Bash(pytest)", "Bash(pytest *)",
+        "Bash(.venv/bin/pytest)", "Bash(.venv/bin/pytest *)",
+        "Bash(python3 -m pytest)", "Bash(python3 -m pytest *)",
+        "Bash(git diff)", "Bash(git diff *)", "Bash(git status)", "Bash(git status *)"
+      ],
+      "write_paths": [],
+      "checks": ["tool_calls", "verify_verdict"],
+      "require_tool_call": {"tool": "Bash", "regex": "pytest|git (diff|status)"}
+    },
+    {
+      "id": "pr",
+      "order": 8,
+      "title": "Pull Request",
+      "agent": "pr",
+      "approval_required": true,
+      "responsibility": "Create the feature branch and pull request through GitHub MCP.",
+      "required_headings": ["Summary", "Branch", "Pull Request", "Evidence"],
+      "tools": ["mcp__github__*", "Bash(python3 orchestrator.py status)", "Bash(python3 orchestrator.py describe pr)"],
+      "write_paths": [],
+      "checks": ["github_pr"],
+      "evidence_tool_regex": "create_pull_request"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+.env.*
+!.env.example
+.DS_Store
+sdlc/tool_log.jsonl
+sdlc/runs/
+sdlc/.lock
+.claude/settings.local.json
+artifacts/*/
+artifacts/*.evidence.json
+docs/codemie/

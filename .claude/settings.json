@@ -1,0 +1,62 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 orchestrator.py status*)",
+      "Bash(python3 orchestrator.py describe *)",
+      "Bash(python3 orchestrator.py doctor)",
+      "Bash(python3 orchestrator.py verify-audit)",
+      "Bash(python3 orchestrator.py verify-evidence*)",
+      "Bash(python3 orchestrator.py check-mcp)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(~/.config/sdlc-engine/**)",
+      "Bash(*orchestrator.py approve*)",
+      "Bash(*orchestrator.py reject*)",
+      "Bash(*orchestrator.py reopen*)",
+      "Bash(*orchestrator.py authorize-pr*)",
+      "Bash(*orchestrator.py init*)",
+      "Bash(*orchestrator.py submit*)",
+      "Bash(*orchestrator.py start*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -f*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/hooks/guard.py\" pre || exit 2"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/hooks/guard.py\" post"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/hooks/guard.py\" post-failure"
+          }
+        ]
+      }
+    ]
+  }
+}

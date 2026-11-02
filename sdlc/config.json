@@ -1,0 +1,10 @@
+{
+  "requirements_sources": ["https://rbitestuserrj.atlassian.net/wiki/spaces/~71202025eaf9215838446398153749e55e74f1/pages/393233/Todo+List+User+Story"],
+  "github_repo": "RajatMishra507/claude_agentic_sdlc",
+  "branch_prefix": "sdlc/",
+  "base_branch": "main",
+  "doc_sync": {
+    "description": "Automated Documentation Sync: keep documentation under docs/ consistent with the approved requirements.",
+    "target_paths": ["docs/"]
+  }
+}
